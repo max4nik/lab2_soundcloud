@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,33 +14,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+        textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme),
+        backgroundColor: const Color.fromRGBO(32, 30, 33, 1),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Home'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -48,68 +32,301 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    double leftMargin = 150;
+    if (MediaQuery.of(context).orientation == Orientation.landscape) {
+      leftMargin = 320;
+    }
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(32, 30, 33, 1),
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+          backgroundColor: const Color.fromRGBO(32, 30, 33, 1),
+          title: Container(
+            margin: EdgeInsets.only(top: 8, left: leftMargin),
+            child: const Text(
+              'Home',
+              style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w100, // light
+                  color: Color.fromRGBO(227, 225, 228, 1)),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: Image.asset('assets/upload_icon.png'),
+              iconSize: 30,
+              color: Colors.grey,
             ),
-          ],
-        ),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.notifications_none),
+              iconSize: 30,
+              color: Colors.grey,
+            ),
+          ]),
+      body: Stack(children: [SingleChildScrollView(
+
+        child: Column(children: [
+          Container(
+            color: const Color.fromRGBO(23, 21, 24, 1),
+            height: 15,
+          ),
+          _relatedSongsList(context),
+          Container(
+            color: const Color.fromRGBO(23, 21, 24, 1),
+            height: 15,
+          ),
+          _chartSongsList(context),
+          Container(
+            color: const Color.fromRGBO(23, 21, 24, 1),
+            height: 15,
+          ),
+          _uploadContainer(context),
+        ]),
+      ),  _player(context)]),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: const Color.fromRGBO(17, 17, 17, 1),
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.grey,
+        items: <BottomNavigationBarItem>[
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Image.asset('assets/bolt.png', width: 30, height: 30),
+            label: '',
+          ),
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Image.asset('assets/menu.png', width: 30, height: 30),
+            label: '',
+          ),
+        ],
+        iconSize: 35,
+        showSelectedLabels: false,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+}
+
+Widget _player(BuildContext context) {
+  double width1 = 90;
+  double width2 = 80;
+  if (MediaQuery.of(context).orientation == Orientation.landscape) {
+    width1 = 250;
+    width2 = 260;
+  }
+  return Positioned(top: 545,width: 500, child: Container(
+      color: const Color.fromRGBO(54, 54, 62, 1),
+      width: double.maxFinite,
+      child: Row(
+        children: [
+          IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.play_arrow, color: Colors.white)),
+          Container(width: width1),
+          Column(
+            children: const [
+              Text(
+                'rain w/ t1de (s&r)',
+                style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500),
+              ),
+              Text(
+                'sindye',
+                style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w100),
+              ),
+            ],
+          ),
+          Container(width: width2),
+          IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.favorite, color: Colors.white)),
+        ],
+      )));
+}
+
+Widget _relatedSongsList(BuildContext context) {
+  String title = 'More of what you like';
+  String description = 'Suggestions based on what you\'ve liked or played';
+  var songsImages = [
+    'assets/1_1.jpg',
+    'assets/1_2.jpg',
+    'assets/1_3.jpg',
+    'assets/1_4.jpg'
+  ];
+  var songsTitles = [
+    'Your Pink Hair (...',
+    'Digital Love (Fea...',
+    'reach you + tide...',
+    'Sony Ericsson'
+  ];
+  String songTheme = 'Related tracks';
+  return _songsList(
+      context, title, description, songsImages, songsTitles, songTheme);
+}
+
+Widget _chartSongsList(BuildContext context) {
+  String title = 'Charts: Top 50';
+  String description = 'The most played tracks on SoundCloud this week';
+  var songsImages = [
+    'assets/2_1.jpg',
+    'assets/2_1.jpg',
+    'assets/2_2.jpg',
+    'assets/2_3.jpg'
+  ];
+  var songsTitles = [
+    'All music genres',
+    'Global Beats',
+    'Hip Hop & Rap',
+    'Electronic'
+  ];
+  String songTheme = 'Top 50';
+  return _songsList(
+      context, title, description, songsImages, songsTitles, songTheme);
+}
+
+Widget _songsList(BuildContext context, String title, String description,
+    songsImages, songsTitles, String songTheme) {
+  return Container(
+    margin: const EdgeInsets.only(top: 20),
+    child: Column(children: [
+      Container(
+          margin: const EdgeInsets.only(left: 20),
+          child: Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                title,
+                style: const TextStyle(
+                    fontSize: 25,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w100),
+              ))),
+      Container(
+          margin: const EdgeInsets.only(left: 20, top: 5),
+          child: Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                description,
+                style: const TextStyle(
+                    fontSize: 15,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w100),
+              ))),
+      SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(children: <Widget>[
+          _songContainer(context, songsImages[0], songsTitles[0], songTheme),
+          _songContainer(context, songsImages[1], songsTitles[1], songTheme),
+          _songContainer(context, songsImages[2], songsTitles[2], songTheme),
+          _songContainer(context, songsImages[3], songsTitles[3], songTheme),
+        ]),
+      ),
+      Container(
+        margin: const EdgeInsets.only(top: 20.0),
+        color: const Color.fromRGBO(32, 30, 33, 1),
+      ),
+    ]),
+  );
+}
+
+Widget _uploadContainer(BuildContext context) {
+  return Container(
+      margin: const EdgeInsets.only(top: 20, bottom: 65),
+      child: Column(children: [
+        Container(
+            margin: const EdgeInsets.only(left: 20),
+            child: const Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'The Upload',
+                  style: TextStyle(
+                      fontSize: 25,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w100),
+                ))),
+        Container(
+            margin: const EdgeInsets.only(left: 20, top: 5),
+            child: const Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Newly posted tracks. Just for you',
+                  style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w100),
+                ))),
+        Container(
+            margin: const EdgeInsets.all(20),
+            child: Image.asset('assets/upload.jpg')),
+        Container(
+            margin: const EdgeInsets.only(left: 20),
+            child: Row(children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(50),
+                child: Image.asset('assets/avatar.jpg', width: 25, height: 25),
+              ),
+              Container(
+                  margin: const EdgeInsets.only(left: 8),
+                  child: const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Based on your listening history',
+                        style: TextStyle(
+                            fontSize: 13,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w100),
+                      )))
+            ]))
+      ]));
+}
+
+Widget _songContainer(
+    BuildContext context, String imageLink, title, description) {
+  double width = 1;
+  double height = 1;
+  var screenSize = MediaQuery.of(context).size;
+  if (MediaQuery.of(context).orientation == Orientation.landscape) {
+    width = 0.5;
+    height = 2;
+  }
+  return Column(children: [
+    Container(
+      margin: const EdgeInsets.all(15),
+      width: screenSize.width * 0.35 * width,
+      height: screenSize.height * 0.18 * height,
+      decoration:
+          BoxDecoration(image: DecorationImage(image: AssetImage(imageLink))),
+    ),
+    Align(
+        alignment: Alignment.topLeft,
+        child: Text(
+          title,
+          style: const TextStyle(
+              fontSize: 15, color: Colors.white, fontWeight: FontWeight.w100),
+        )),
+    Container(
+        margin: const EdgeInsets.only(top: 7, right: 35),
+        child: Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              description,
+              style: const TextStyle(
+                  fontSize: 13,
+                  color: Colors.grey,
+                  fontWeight: FontWeight.w100),
+            ))),
+  ]);
 }

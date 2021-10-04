@@ -1,5 +1,5 @@
-name: lab2_soundcloud
-description: My custom SoundCloud app on Flutter
+name: soundcloud
+description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -29,8 +29,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-
+  google_fonts: ^2.1.0
+  flutter_launcher_icons: ^0.9.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -51,7 +51,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-
+  assets:
+    - assets/
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
