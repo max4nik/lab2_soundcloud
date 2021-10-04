@@ -123,7 +123,7 @@ Widget _player(BuildContext context) {
     width1 = 250;
     width2 = 260;
   }
-  return Positioned(top: 545,width: 500, child: Container(
+  return Positioned(top: 545, width: 500, child: Container(
       color: const Color.fromRGBO(54, 54, 62, 1),
       width: double.maxFinite,
       child: Row(
